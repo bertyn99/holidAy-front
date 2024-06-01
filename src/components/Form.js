@@ -30,7 +30,7 @@ const Form = () => {
     setData('');
   }, [data]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, file) => {
     e.preventDefault();
 
     // Ajoute le message de l'utilisateur à la conversation
@@ -39,28 +39,33 @@ const Form = () => {
       { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
     ]);
 
+    // Créer un objet FormData
+    const formData = new FormData();
+    formData.append('content', prompt);
+    formData.append('file', file);
+
     // Appel API
-    await fetchData(prompt, '');
+    await fetchData(formData);
     setPrompt('');
   };
 
   return (
     <div 
-      className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10 overflow-hidden" 
+      className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10 overflow-hidden px-4" 
       style={{ boxShadow: '0 0 50px 0 rgba(255, 255, 255, 0.2)', border: "0.5px solid", borderColor: "#696FFF" }}>
       <div className="absolute top-0 left-0 w-full h-1/20 bg-gradient-to-b from-black to-transparent h-10 rounded-2xl pt-10"></div>
-      <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth" ref={conversationRef}>
-        <div className="w-full space-y-4">
-          <div className="pt-8 pb-2">
-            <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">Good morning, 👋 Tell us about your trip</h1>
+        <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth" ref={conversationRef}>
+          <div className="w-full space-y-4">
+            <div className="pt-8 pb-2">
+              <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">Good morning, 👋 Tell us about your trip</h1>
+            </div>
+            {/* Bulle par défaut de l'interlocuteur */}
+            <Bubble key={-1} text="" timestamp="" isUser={false} />
+            {/* Bulles de conversation dynamiques */}
+            {conversation.map((conv, index) => (
+              <Bubble key={index} text={conv.text} timestamp={conv.timestamp} isUser={conv.isUser} />
+            ))}
           </div>
-          {/* Bulle par défaut de l'interlocuteur */}
-          <Bubble key={-1} text="" timestamp="" isUser={false} />
-          {/* Bulles de conversation dynamiques */}
-          {conversation.map((conv, index) => (
-            <Bubble key={index} text={conv.text} timestamp={conv.timestamp} isUser={conv.isUser} />
-          ))}
-        </div>
       </div>
       <Input prompt={prompt} setPrompt={setPrompt} handleSubmit={handleSubmit} />
       <style jsx>{`
