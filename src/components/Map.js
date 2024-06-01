@@ -166,7 +166,8 @@ const Map = () => {
   }
 
   return (
-    <div className="h-full flex-1 relative">
+  <div className="h-full flex-1 relative rounded-2xl overflow-hidden z-10">
+    <div className="absolute inset-0 bg-black opacity-60"></div>
       <GoogleMap
         mapContainerStyle={containerStyle}
         onLoad={onLoad}
