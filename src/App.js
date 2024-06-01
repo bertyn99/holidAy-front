@@ -5,7 +5,7 @@ import './App.css';  // Assurez-vous que le chemin est correct selon la structur
 
 function App() {
   return (
-    <div className="w-screen h-screen p-10 bg-primary-bg bg-cover bg-no-repeat">
+    <div className="w-screen h-screen p-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center">
       <Form />
       <Map></Map>
     </div>

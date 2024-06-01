@@ -166,7 +166,7 @@ const Map = () => {
   }
 
   return (
-    <div className="h-screen w-full relative">
+    <div className="h-full flex-1 relative">
       <GoogleMap
         mapContainerStyle={containerStyle}
         onLoad={onLoad}

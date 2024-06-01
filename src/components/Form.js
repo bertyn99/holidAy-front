@@ -31,7 +31,7 @@ const Form = () => {
 
   return (
     <div 
-      className="flex flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative" 
+      className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10" 
       style={{ boxShadow: '0 0 50px 0 rgba(255, 255, 255, 0.2)', border: "0.5px solid", borderColor: "#696FFF" }}>
       <div className="absolute top-0 left-0 w-full h-1/20 bg-gradient-to-b from-black to-transparent h-10 rounded-2xl pt-10"></div>
       <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth" ref={conversationRef}>
