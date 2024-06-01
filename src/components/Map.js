@@ -418,30 +418,4 @@ const Map = () => {
     );
   }
 
-  return (
-  <div className="h-full flex-1 relative rounded-2xl overflow-hidden z-10">
-    <div className="absolute inset-0 bg-black opacity-60"></div>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        {directionsResponseCar && (
-          <DirectionsRenderer
-            directions={directionsResponseCar}
-            options={{ suppressMarkers: true, preserveViewport: true }} // Suppress default markers and preserve viewport
-          />
-        )}
-        {directionsResponsesWalking.map((directions, index) => (
-          <DirectionsRenderer
-            key={index}
-            directions={directions}
-            options={{ suppressMarkers: true, polylineOptions: { strokeColor: 'blue' }, preserveViewport: true }} // Different color for walking route and preserve viewport
-          />
-        ))}
-        {markers}
-      </GoogleMap>
-    </div>
-  );
-}
 export default Map;
