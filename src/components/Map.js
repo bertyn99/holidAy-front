@@ -7,14 +7,175 @@ const containerStyle = {
   height: '100%'
 };
 
-// Predefined array of place names
-const placeNames = [
-  "Restaurant Le Coquillage - Saint-Méloir-des-Ondes",
-  "Hôtel Le Magic Hall - Rennes",
-  "Site touristique Alignements de Carnac - Carnac",
-  "Restaurant La Table Breizh Café - Cancale",
-  "Hôtel Le Continental - Brest",
-];
+const mockFetchPlaces = async () => {
+  // Simulate fetching JSON from an API
+  const response = {
+    "trip": {
+      "start_date": "12/12/2024",
+      "duration": "5 days",
+      "budget_per_person": "2000€",
+      "interests": ["culture", "food", "shopping"],
+      "travelers": 2
+    },
+    "itinerary": [
+      {
+        "day": 1,
+        "destinations": [
+          {
+            "name": "Tokyo Tower",
+            "address": "4 Chome-2-8 Shibakoen, Minato City, Tokyo 105-0011, Japan",
+            "coordinates": {"latitude": 35.6586, "longitude": 139.7454},
+            "transport": "Subway - Oedo Line to Akabanebashi Station",
+            "ticket_price": "¥900",
+            "ticket_link": "https://www.tokyotower.co.jp/en.html",
+            "weather": "Average temperature: 10°C, partly cloudy"
+          },
+          {
+            "name": "Roppongi Hills",
+            "address": "6 Chome-10-1 Roppongi, Minato City, Tokyo 106-6108, Japan",
+            "coordinates": {"latitude": 35.6604, "longitude": 139.7292},
+            "transport": "Walk or short subway ride from Tokyo Tower",
+            "ticket_price": "Free",
+            "ticket_link": "https://www.roppongihills.com/en/",
+            "weather": "Average temperature: 10°C, partly cloudy"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "destinations": [
+          {
+            "name": "Senso-ji Temple",
+            "address": "2 Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japan",
+            "coordinates": {"latitude": 35.7146, "longitude": 139.7966},
+            "transport": "Subway - Ginza Line to Asakusa Station",
+            "ticket_price": "Free admission",
+            "ticket_link": "https://www.senso-ji.jp/",
+            "weather": "Average temperature: 12°C, sunny"
+          },
+          {
+            "name": "Nakamise Shopping Street",
+            "address": "Asakusa, Taito City, Tokyo 111-0032, Japan",
+            "coordinates": {"latitude": 35.7142, "longitude": 139.7966},
+            "transport": "Walk from Senso-ji Temple",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 12°C, sunny"
+          },
+          {
+            "name": "Sumida Aquarium",
+            "address": "1-1-2 Oshiage, Sumida City, Tokyo 131-0045, Japan",
+            "coordinates": {"latitude": 35.7101, "longitude": 139.8107},
+            "transport": "Subway - Hanzomon Line to Oshiage Station",
+            "ticket_price": "¥2050",
+            "ticket_link": "https://www.sumida-aquarium.com/en/",
+            "weather": "Average temperature: 12°C, sunny"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "destinations": [
+          {
+            "name": "Shibuya Crossing",
+            "address": "2 Chome-2-1 Dogenzaka, Shibuya City, Tokyo 150-0043, Japan",
+            "coordinates": {"latitude": 35.6614, "longitude": 139.7041},
+            "transport": "JR Yamanote Line to Shibuya Station",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 15°C, clear skies"
+          },
+          {
+            "name": "Shibuya Center-Gai",
+            "address": "Udagawacho, Shibuya City, Tokyo 150-0042, Japan",
+            "coordinates": {"latitude": 35.6607, "longitude": 139.7004},
+            "transport": "Walk from Shibuya Crossing",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 15°C, clear skies"
+          },
+          {
+            "name": "Omotesando Shopping Street",
+            "address": "Jingumae, Shibuya City, Tokyo 150-0001, Japan",
+            "coordinates": {"latitude": 35.6681, "longitude": 139.7085},
+            "transport": "Subway - Ginza Line to Omotesando Station",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 15°C, clear skies"
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "destinations": [
+          {
+            "name": "Meiji Shrine",
+            "address": "1-1 Yoyogikamizonocho, Shibuya City, Tokyo 151-0052, Japan",
+            "coordinates": {"latitude": 35.6764, "longitude": 139.6993},
+            "transport": "JR Yamanote Line to Harajuku Station",
+            "ticket_price": "Free admission",
+            "ticket_link": "https://www.meijijingu.or.jp/",
+            "weather": "Average temperature: 14°C, partly cloudy"
+          },
+          {
+            "name": "Takeshita Street",
+            "address": "1 Chome-17 Jingumae, Shibuya City, Tokyo 150-0001, Japan",
+            "coordinates": {"latitude": 35.6704, "longitude": 139.7065},
+            "transport": "Walk from Meiji Shrine",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 14°C, partly cloudy"
+          },
+          {
+            "name": "Yoyogi Park",
+            "address": "2-1 Yoyogikamizonocho, Shibuya City, Tokyo 151-0052, Japan",
+            "coordinates": {"latitude": 35.6717, "longitude": 139.6949},
+            "transport": "Walk from Takeshita Street",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 14°C, partly cloudy"
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "destinations": [
+          {
+            "name": "Tsukiji Fish Market",
+            "address": "5 Chome-2-1 Tsukiji, Chuo City, Tokyo 104-0045, Japan",
+            "coordinates": {"latitude": 35.6654, "longitude": 139.7707},
+            "transport": "Subway - Hibiya Line to Tsukiji Station",
+            "ticket_price": "Free admission",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 13°C, chance of rain"
+          },
+          {
+            "name": "Ginza Shopping District",
+            "address": "Ginza, Chuo City, Tokyo 104-0061, Japan",
+            "coordinates": {"latitude": 35.6717, "longitude": 139.7647},
+            "transport": "Subway - Hibiya Line to Ginza Station",
+            "ticket_price": "Free",
+            "ticket_link": "N/A",
+            "weather": "Average temperature: 13°C, chance of rain"
+          },
+          {
+            "name": "Kabuki-za Theatre",
+            "address": "4 Chome-12-15 Ginza, Chuo City, Tokyo 104-0061, Japan",
+            "coordinates": {"latitude": 35.6692, "longitude": 139.7641},
+            "transport": "Walk from Ginza Shopping District",
+            "ticket_price": "Varies",
+            "ticket_link": "https://www.kabukiweb.net/",
+            "weather": "Average temperature: 13°C, chance of rain"
+          }
+        ]
+      }
+    ]
+  };
+
+  // Parse the JSON and extract the list of place names
+  const places = response.itinerary.flatMap(day => day.destinations.map(destination => destination.name));
+  return places;
+};
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -41,7 +202,20 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    if (isLoaded && map) {
+    const fetchPlaces = async () => {
+      try {
+        const places = await mockFetchPlaces();
+        setPlaces(places);
+      } catch (error) {
+        console.error('Failed to fetch places:', error);
+      }
+    };
+
+    fetchPlaces();
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded && map && places.length > 0) {
       const service = new window.google.maps.places.PlacesService(map);
       const fetchedPlaces = [];
 
@@ -70,14 +244,14 @@ const Map = () => {
         });
       };
 
-      Promise.all(placeNames.map(fetchPlace)).then(() => {
+      Promise.all(places.map(fetchPlace)).then(() => {
         fetchedPlaces.sort((a, b) => a.originalIndex - b.originalIndex);
         setPlaces(fetchedPlaces);
       }).catch(error => {
         console.error(error);
       });
     }
-  }, [isLoaded, map]);
+  }, [isLoaded, map, places]);
 
   const generateRoute = useCallback((travelMode, origin, destination, waypoints, callback) => {
     const directionsService = new window.google.maps.DirectionsService();
@@ -99,7 +273,7 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    if (places.length >= 2) {
+    if (places.length >= 2 && places[0].geometry) {
       const origin = places[0].geometry.location;
       const waypoints = places.slice(1, -1).map(place => ({ location: place.geometry.location, stopover: true }));
       const destination = places[places.length - 1].geometry.location;
@@ -133,7 +307,7 @@ const Map = () => {
   }, [places, generateRoute]);
 
   useEffect(() => {
-    if (map && places.length) {
+    if (map && places.length && places[0].geometry) {
       // Clear existing markers to avoid duplicates
       markers.forEach(marker => marker.setMap(null));
 
@@ -163,6 +337,10 @@ const Map = () => {
 
   if (!isLoaded) {
     return <div>Loading...</div>;
+  }
+
+  if (places.length === 0) {
+    return <div>Loading places...</div>;
   }
 
   return (
