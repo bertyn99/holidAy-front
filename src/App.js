@@ -5,11 +5,12 @@ import './App.css';  // Assurez-vous que le chemin est correct selon la structur
 import Navbar from './components/Navbar';
 
 function App() {
-  return (     <div className='h-screen flex flex-col'>
+  return (     
+  <div className='h-screen flex flex-col'>
 
       <Navbar/>   
 
-      <div className="flex-grow w-screen p-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center">
+      <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center">
       <Form />
       <Map></Map>
     </div>
