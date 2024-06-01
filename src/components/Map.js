@@ -41,7 +41,7 @@ const mockFetchPlaces = async () => {
           }
         ]
       },
-      {
+  /*     {
         "day": 2,
         "destinations": [
           {
@@ -168,7 +168,8 @@ const mockFetchPlaces = async () => {
             "weather": "Average temperature: 13°C, chance of rain"
           }
         ]
-      }
+      } */
+    
     ]
   };
 

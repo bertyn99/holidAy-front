@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Input from './Input';
 import Bubble from './Bubble';
+import CardHotel from './CardHotel';
 
 const Form = () => {
   const [prompt, setPrompt] = useState('');
   const [conversation, setConversation] = useState([]);
 
+  const hotel = {
+
+    name: "Hotel de Paris",
+    description: "Hotel de Paris is a luxury hotel in the heart of Monaco, established in 1864.",
+    city: "Monte Carlo, Monaco",
+    rating: "5 stars",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Hotel_de_Paris%2C_Monte_Carlo.jpg/1920px-Hotel_de_Paris%2C_Monte_Carlo.jpg"
+
+
+  };
   // Référence à la div contenant la conversation
   const conversationRef = useRef(null);
 
@@ -45,6 +56,9 @@ const Form = () => {
           {conversation.map((conv, index) => (
             <Bubble key={index} text={conv.text} timestamp={conv.timestamp} isUser={conv.isUser} />
           ))}
+
+
+          <CardHotel hotel={hotel} />
         </div>
       </div>
       <Input prompt={prompt} setPrompt={setPrompt} handleSubmit={handleSubmit} />

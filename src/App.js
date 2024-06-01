@@ -8,6 +8,7 @@ function App() {
     <div className="w-screen h-screen p-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center">
       <Form />
       <Map></Map>
+      
     </div>
   );
 }
