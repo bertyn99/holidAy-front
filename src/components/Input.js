@@ -1,65 +1,61 @@
-import React from 'react';
-import DocumentPlusIcon from '../public/icons/document-plus.svg';
-import PaperAirplaneIcon from '../public/icons/paper-airplane.svg';
+import React, { useState } from 'react';
+import { ReactComponent as DocumentPlusIcon } from '../public/icons/document-plus.svg';
+import { ReactComponent as PaperAirplaneIcon } from '../public/icons/paper-airplane.svg';
+import { FaRegFilePdf } from "react-icons/fa";
 
 const Input = ({ prompt, setPrompt, handleSubmit }) => {
+  const [files, setFiles] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+
+    const newPreviewUrls = selectedFiles.map((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setPreviewUrls((prevUrls) => [...prevUrls, reader.result]);
+      };
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="w-full flex items-center p-4 rounded-b-xl">
-        <input
-            type="text"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Type something"
-            className="flex-grow bg-secondary text-white rounded-l-lg px-4 py-2 text-sm focus:outline-none border-none h-full"
-        />
-        <div className='bg-secondary flex rounded-r-lg border-l-2 border-secondary-dark px-2'>
-            <button type="button" className="mx-2 my-2 border rounded-lg border-opacity-50">
-                <img src={DocumentPlusIcon} alt="Document Plus" className="text-gray-400 h-6 mx-4 my-2 hover:text-opacity-50" />
-            </button>
-            <button type="submit" className="mx-2 my-2 rounded-lg bg-primary-purple hover:bg-opacity-50">
-                <img src={PaperAirplaneIcon} alt="Document Plus" className="text-gray-400 h-6 mx-4 my-2" />
-            </button>
-      </div>
-    </form>
+    <div className='w-full flex flex-wrap flex-row'>
+        <div className='w-full flex flex-row flex-wrap'>
+            {files.map((file, index) => (
+                <div key={index} className='w-auto flex justify-items-start pl-4 pt-2'>
+                    {file.type === 'application/pdf' ? (
+                        <div className='w-10 h-auto'>  
+                            <FaRegFilePdf className='w-auto h-12' />
+                        </div>
+                    ) : (
+                        <img src={previewUrls[index]} alt="Preview" className="w-auto h-12 rounded-md" />
+                    )}
+                </div>
+            ))}
+        </div>
+        <form onSubmit={(e) => handleSubmit(e, files)} className="w-full flex items-center p-4 rounded-b-xl flex-wrap">
+            <input
+                type="text"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Type something"
+                className="flex-grow bg-secondary text-white rounded-l-lg px-4 py-2 text-sm focus:outline-none border-none h-full"
+            />
+            <div className='bg-secondary flex rounded-r-lg border-l-2 border-secondary-dark px-2'>
+                <label htmlFor="file-input" className="mx-2 my-2 border rounded-lg hover:border-primary-purple border-opacity-50 cursor-pointer">
+                <DocumentPlusIcon className='text-gray-400 h-6 mx-4 my-2'/>
+                <input id="file-input" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={handleFileChange} multiple style={{ display: 'none' }} />
+                </label>
+                <button type="submit" className="mx-2 my-2 rounded-lg bg-primary-purple hover:bg-opacity-50">
+                <PaperAirplaneIcon className='text-gray-400 h-6 mx-4 my-2'/>
+                </button>
+            </div>
+        </form>
+    </div>
+
   );
 };
-
-function PaperclipIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-    </svg>
-  );
-}
-
-function PlaneIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
-    </svg>
-  );
-}
 
 export default Input;

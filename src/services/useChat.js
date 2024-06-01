@@ -4,27 +4,27 @@ const useChatBotApi = (setData) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async (prompt) => {
+  const fetchData = useCallback(async (formData) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3000/chat', {
+      console.log('formData : ', formData);
+      /*const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          
+          'Content-Type': 'multipart/form-data', // Spécifier le bon type de contenu
         },
-        body: JSON.stringify({ prompt }),
+        body: formData,
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('Fetched data:', data); // Ajout de log pour vérifier la réponse
-      setData(data); // Utilise le setData passé en paramètre
+      const data = await response.text();
+      console.log('Fetched data:', data);
+      setData(data);*/
     } catch (error) {
       setError(error);
     } finally {
