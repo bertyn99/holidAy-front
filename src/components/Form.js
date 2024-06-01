@@ -30,12 +30,15 @@ const Form = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl bg-primary-bg text-white">
-      <div className="border-b border-gray-700 p-4">
-        <h1 className="text-xl font-bold">TravelAi</h1>
-      </div>
-      <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto" ref={conversationRef}>
+    <div 
+      className="flex flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative" 
+      style={{ boxShadow: '0 0 50px 0 rgba(255, 255, 255, 0.2)', border: "0.5px solid", borderColor: "#696FFF" }}>
+      <div className="absolute top-0 left-0 w-full h-1/20 bg-gradient-to-b from-black to-transparent h-10 rounded-2xl pt-10"></div>
+      <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth" ref={conversationRef}>
         <div className="w-full space-y-4">
+          <div className="pt-8 pb-2">
+            <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">Good morning, 👋 Tell us about your trip</h1>
+          </div>
           {/* Bulle par défaut de l'interlocuteur */}
           <Bubble key={-1} text="" timestamp="" isUser={false} />
           {/* Bulles de conversation dynamiques */}
@@ -45,6 +48,19 @@ const Form = () => {
         </div>
       </div>
       <Input prompt={prompt} setPrompt={setPrompt} handleSubmit={handleSubmit} />
+      <style jsx>{`
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: #343943;
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+      `}
+      </style>
     </div>
   );
 };

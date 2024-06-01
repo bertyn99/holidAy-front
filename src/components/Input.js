@@ -1,21 +1,25 @@
 import React from 'react';
+import DocumentPlusIcon from '../public/icons/document-plus.svg';
+import PaperAirplaneIcon from '../public/icons/paper-airplane.svg';
 
 const Input = ({ prompt, setPrompt, handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit} className="w-full flex items-center p-4 bg-gray-800 border-t border-gray-700">
-      <input
-        type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Type something"
-        className="flex-grow bg-gray-700 text-white rounded-full px-4 py-2 text-sm focus:outline-none"
-      />
-      <button type="button" className="ml-2">
-        <PaperclipIcon className="text-gray-400" />
-      </button>
-      <button type="submit" className="ml-2">
-        <PlaneIcon className="text-blue-500" />
-      </button>
+    <form onSubmit={handleSubmit} className="w-full flex items-center p-4 rounded-b-xl">
+        <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Type something"
+            className="flex-grow bg-secondary text-white rounded-l-lg px-4 py-2 text-sm focus:outline-none border-none h-full"
+        />
+        <div className='bg-secondary flex rounded-r-lg border-l-2 border-secondary-dark px-2'>
+            <button type="button" className="mx-2 my-2 border rounded-lg border-opacity-50">
+                <img src={DocumentPlusIcon} alt="Document Plus" className="text-gray-400 h-6 mx-4 my-2 hover:text-opacity-50" />
+            </button>
+            <button type="submit" className="mx-2 my-2 rounded-lg bg-primary-purple hover:bg-opacity-50">
+                <img src={PaperAirplaneIcon} alt="Document Plus" className="text-gray-400 h-6 mx-4 my-2" />
+            </button>
+      </div>
     </form>
   );
 };

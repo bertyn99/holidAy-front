@@ -1,10 +1,10 @@
 import React from 'react';
-import Form from './components/Form'
-import './App.css';  // Assure-toi que le chemin est correct selon la structure de tes dossiers
+import Form from './components/Form';
+import './App.css';  // Assurez-vous que le chemin est correct selon la structure de vos dossiers
 
 function App() {
   return (
-    <div className="w-screen">
+    <div className="w-screen h-screen p-10 bg-primary-bg bg-cover bg-no-repeat">
       <Form />
     </div>
   );
