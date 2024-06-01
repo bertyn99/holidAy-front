@@ -4,17 +4,43 @@ const useChatBotApi = (setData) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async (formData) => {
+  const sendText = useCallback(async (text) => {
     setLoading(true);
     setError(null);
 
     try {
-      console.log('formData : ', formData);
-      /*const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data', // Spécifier le bon type de contenu
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ content: text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.text();
+      console.log('Fetched data:', data);
+      setData(data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [setData]);
+
+  const sendFile = useCallback(async (file) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('http://localhost:8000/chat/file', {
+        method: 'POST',
         body: formData,
       });
 
@@ -24,7 +50,7 @@ const useChatBotApi = (setData) => {
 
       const data = await response.text();
       console.log('Fetched data:', data);
-      setData(data);*/
+      setData(data);
     } catch (error) {
       setError(error);
     } finally {
@@ -32,7 +58,7 @@ const useChatBotApi = (setData) => {
     }
   }, [setData]);
 
-  return { loading, error, fetchData };
+  return { loading, error, sendText, sendFile };
 };
 
 export default useChatBotApi;

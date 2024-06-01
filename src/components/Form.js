@@ -5,9 +5,10 @@ import useChatBotApi from '../services/useChat';
 
 const Form = () => {
   const [prompt, setPrompt] = useState('');
+  const [files, setFiles] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
-  const { loading, error, fetchData } = useChatBotApi(setData);
+  const { loading, error, sendText, sendFile } = useChatBotApi(setData);
 
   // Référence à la div contenant la conversation
   const conversationRef = useRef(null);
@@ -30,23 +31,34 @@ const Form = () => {
     setData('');
   }, [data]);
 
-  const handleSubmit = async (e, file) => {
+  const handleSubmit = async (e, selectedFiles) => {
     e.preventDefault();
 
-    // Ajoute le message de l'utilisateur à la conversation
-    setConversation((prev) => [
-      ...prev,
-      { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
-    ]);
+    // Vérifie si l'utilisateur a saisi du texte ou téléchargé des fichiers, mais pas les deux
+    if (prompt && selectedFiles.length === 0) {
+      // Ajoute le message de l'utilisateur à la conversation
+      setConversation((prev) => [
+        ...prev,
+        { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
+      ]);
 
-    // Créer un objet FormData
-    const formData = new FormData();
-    formData.append('content', prompt);
-    formData.append('file', file);
+      // Envoie le texte
+      await sendText(prompt);
+    } else if (!prompt && selectedFiles.length > 0) {
+      // Ajoute une entrée pour le fichier dans la conversation
+      setConversation((prev) => [
+        ...prev,
+        { text: 'File sent', timestamp: new Date().toLocaleTimeString(), isUser: true }
+      ]);
 
-    // Appel API
-    await fetchData(formData);
+      // Envoie les fichiers
+      for (let file of selectedFiles) {
+        await sendFile(file);
+      }
+    }
+
     setPrompt('');
+    setFiles([]);
   };
 
   return (
@@ -67,7 +79,7 @@ const Form = () => {
             ))}
           </div>
       </div>
-      <Input prompt={prompt} setPrompt={setPrompt} handleSubmit={handleSubmit} />
+      <Input prompt={prompt} setPrompt={setPrompt} files={files} setFiles={setFiles} handleSubmit={handleSubmit} />
       <style jsx>{`
         ::-webkit-scrollbar {
           width: 10px;
