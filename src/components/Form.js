@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Input from './Input';
 import Bubble from './Bubble';
 import useChatBotApi from '../services/useChat';
+import {debounce} from '../utils/debounce';
 
 const Form = () => {
   const [prompt, setPrompt] = useState('');
@@ -9,8 +10,29 @@ const Form = () => {
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
   const { loading, error, sendText, sendFile } = useChatBotApi(setData);
+  const [accumulatedMessages, setAccumulatedMessages] = useState([]); // State for accumulated messages
 
   const conversationRef = useRef(null);
+
+  const debouncedSendText = useRef(debounce(async (message) => {
+   /*  await sendText(message); */
+   console.log('call back');
+    setAccumulatedMessages([]); // Clear accumulated messages after sending
+  }, 4000)).current;
+  const sendAccumulatedMessages = async () => {
+
+    const combinedMessage = accumulatedMessages.join(' ');
+    setConversation((prev) => [
+      ...prev,
+      { text: combinedMessage, timestamp: new Date().toLocaleTimeString(), isUser: true }
+    ]);
+
+    setAccumulatedMessages((prev) => [...prev, prompt]);
+      debouncedSendText(accumulatedMessages.join(' ') + ' ' + prompt); // Call the debounced function with combined message
+
+      setPrompt('');
+    /* await sendText(combinedMessage);  */// Send combined message
+  };
 
   useEffect(() => {
     if (conversationRef.current) {
@@ -40,13 +62,14 @@ const Form = () => {
     e.preventDefault();
 
     if (prompt && selectedFiles.length === 0) {
-      setConversation((prev) => [
+     /*  setConversation((prev) => [
         ...prev,
         { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
-      ]);
+      ]); */
 
-      setPrompt('');
-      await sendText(prompt);
+      sendAccumulatedMessages(); // Send accumulated messages
+     /*  setPrompt('');
+      await sendText(prompt); */
     } else if (!prompt && selectedFiles.length > 0) {
       setConversation((prev) => [
         ...prev,
