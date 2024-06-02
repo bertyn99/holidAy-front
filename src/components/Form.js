@@ -98,11 +98,10 @@ const Form = () => {
           isUser: true,
         },
       ]);
-
- setLoading(true); 
-      setFile(null);
-      await sendFile(selectedFile);
-
+      setLoading(true); // Set loading to true when sending files
+      for (let file of selectedFiles) {
+        await sendFile(file);
+      }
     }
   };
 

@@ -61,7 +61,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
             isUser ? "text-gray-800" : "text-gray-500"
           }`}
         >
-          {timestamp}
+          <span className="timestamp">{timestamp}</span>
         </p>
       </div>
 

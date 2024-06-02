@@ -32,3 +32,10 @@ code {
 	  transform: rotate(360deg);
 	}
   }
+
+  .timestamp {
+	display: block;
+	font-size: 0.75rem; /* Smaller font size */
+	color: #999; /* Light gray color */
+	margin-top: 0.25rem; /* Small top margin */
+  }
