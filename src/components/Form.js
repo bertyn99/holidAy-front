@@ -169,9 +169,7 @@ const Form = () => {
         },
       ]);
       setLoading(true); // Set loading to true when sending files
-      for (let file of selectedFiles) {
-        await sendFile(file);
-      }
+      await sendFile(file);
     }
   };
 
