@@ -168,8 +168,8 @@ const Form = () => {
           isUser: true,
         },
       ]);
-      setLoading(true); // Set loading to true when sending file
-        await sendFile(file);
+      setLoading(true); // Set loading to true when sending files
+      await sendFile(file);
     }
   };
   
