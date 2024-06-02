@@ -8,6 +8,7 @@ const Form = () => {
   const [file, setFile] = useState(null);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
+  const [compteur, setCompteur] = useState(0);
   const [fileResponse, setFileResponse] = useState(null);
   const { loading, error, sendText, sendFile } = useChatBotApi(
     setData,
@@ -28,8 +29,77 @@ const Form = () => {
       try {
         parsedData = JSON.parse(data);
       } catch (error) {
-        parsedData =
-          "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
+        console.log("test");
+        if (data.includes("{")) {
+          let validData
+          try {
+          const test = data.split('```')[1].replace("json","")
+          console.log(test);
+           validData = JSON.parse(test);
+            
+          } catch (error) {
+            console.log('error : ', error)
+          }
+          
+          console.log('compteur : ', compteur)
+          console.log('compteur : ', prompt)
+          if (!validData) {
+            
+          
+          if(compteur < 3) {
+            sendText(`Refais moi la réponse avec le bon format Json. Avec seulement le json, je te donne le format exact : 
+              {
+                  "response":<Résumé de la réponse>,
+                  "Aventure 1": {
+                      "Jour 1":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      },
+                      "Jour 2":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      }
+                  },
+                  "Aventure 2": {
+                      "Jour 1":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      },
+                      "Jour 2":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      }
+                  },
+                  "Aventure 3": {
+                      "Jour 1":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      },
+                      "Jour 2":{
+                          "Activité 1" : <content>,
+                          "Activité 2" : <content>,
+                          "Activité 3" : <content>
+                      }
+                  },
+                  "missing_information" : <A sentence about the missing information>
+              }
+            `);
+            setCompteur(compteur +1);
+            parsedData = 'fail';
+          } else {
+            parsedData = "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
+          }
+        } else {
+          parsedData = validData
+        }
+        } else {
+          parsedData = data;
+        }      
       }
 
       setConversation((prev) => [
