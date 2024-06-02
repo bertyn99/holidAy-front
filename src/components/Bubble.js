@@ -11,27 +11,31 @@ const Bubble = ({ text, timestamp, isUser }) => {
   const adventures = Object.keys(text)
     .filter(
       (key) =>
-        key.startsWith("Adventure") && Object.values(text[key]).length > 0
+        key.startsWith("Aventure") && Object.values(text[key]).length > 0
     )
     .map((adventure) => ({
       name: adventure,
       days: text[adventure],
     }))
     .filter((adventure) => Object.values(adventure.days).length > 0)
-    .filter((adventure) => Object.values(adventure.days["Day 1"]).length > 0)
-    .filter((adventure) => adventure.days["Day 1"]["Activity 1"].trim() !== "");
+    .filter((adventure) => Object.values(adventure.days["Jour 1"]).length > 0)
+    .filter((adventure) => adventure.days["Jour 1"]["Activité 1"].trim() !== "");
 
   console.log(adventures);
 
   // Vérifie si la réponse est vide et que ce n'est pas l'utilisateur
   if (!text.response && !isUser) {
     return (
-      <div className="p-4 mr-32 bg-secondary rounded-t-lg rounded-lg rounded-tl-none">
-        <p className="font-normal">
-          Hi, my name is Holly, where do you want to go?
-        </p>
-        <p className="font-normal text-gray-500">{timestamp}</p>
-      </div>
+        <>
+            <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
+                <p className="font-normal mb-2">Pour commencer, j'aurais besoin de quelques informations :</p>
+                <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li className="font-normal">🏖️ Destination</li>
+                    <li className="font-normal">💰 Budget</li>
+                    <li className="font-normal">⏳ Durée</li>
+                </ul>
+            </div>
+        </>
     );
   }
 
@@ -40,8 +44,8 @@ const Bubble = ({ text, timestamp, isUser }) => {
       <div
         className={`p-4 ${
           isUser
-            ? "ml-32 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none"
-            : "mr-32 bg-secondary rounded-t-lg rounded-lg rounded-tl-none mb-4"
+            ? "lg:ml-32 ml-0 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none"
+            : "lg:mr-32 mr-0 bg-secondary rounded-t-lg rounded-lg rounded-tl-none mb-4"
         }`}
         style={
           isUser
@@ -64,7 +68,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
       {adventures.map((adventure, index) => (
         <div
           key={index}
-          className="bg-secondary p-4 mr-32 rounded-t-lg rounded-lg rounded-tl-none mb-4"
+          className="bg-secondary p-4 lg:mr-32 mr-0 rounded-t-lg rounded-lg rounded-tl-none mb-4"
         >
           <Collapsible title={adventure.name}>
             {Object.keys(adventure.days).map((day, dayIndex) => (
@@ -84,6 +88,12 @@ const Bubble = ({ text, timestamp, isUser }) => {
           </Collapsible>
         </div>
       ))}
+
+      {adventures.length > 1 && (
+        <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
+          <p className="font-normal mb-2">Voici 3 propositions d'aventures. Si elles ne vous conviennent pas, précisez votre demande !</p>
+        </div>
+      )}
     </div>
   );
 };

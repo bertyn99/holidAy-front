@@ -10,7 +10,7 @@ function App() {
 
         <Navbar/>   
 
-        <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
+        <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden lg:flex-row flex-col md:flex-wrap">
           <Form />
           <Map></Map>
         </div>

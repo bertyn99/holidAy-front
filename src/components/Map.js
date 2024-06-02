@@ -396,7 +396,7 @@ const Map = () => {
     };
   
     return (
-      <div className="h-full flex flex-1 relative rounded-2xl overflow-hidden">
+      <div className="h-full flex-1 relative rounded-2xl overflow-hidden lg:flex hidden">
         <div className="absolute top-0 left-0 z-10 p-2 bg-white">
           <button onClick={handlePrevDay}>Prev</button>
           <span>Day {currentDay + 1}</span>
