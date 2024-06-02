@@ -1,4 +1,5 @@
 import React from "react";
+import Collapsible from "./Collapsible";
 
 const Bubble = ({ text, timestamp, isUser }) => {
   // Vérifie si le texte est un objet ou une chaîne de caractères
@@ -57,21 +58,22 @@ const Bubble = ({ text, timestamp, isUser }) => {
           key={index}
           className="bg-secondary p-4 mr-32 rounded-t-lg rounded-lg rounded-tl-none mb-4"
         >
-          <h2 className="font-bold text-lg mb-2">{adventure.name}</h2>
-          {Object.keys(adventure.days).map((day, dayIndex) => (
-            <div key={dayIndex} className="mb-2">
-              <h3 className="font-semibold">{day}</h3>
-              <ul className="list-disc list-inside ml-4">
-                {Object.keys(adventure.days[day]).map(
-                  (activity, activityIndex) => (
-                    <li key={activityIndex} className="font-normal">
-                      {adventure.days[day][activity]}
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-          ))}
+          <Collapsible title={adventure.name}>
+            {Object.keys(adventure.days).map((day, dayIndex) => (
+              <div key={dayIndex} className="mb-2">
+                <h3 className="font-semibold">{day}</h3>
+                <ul className="list-disc list-inside ml-4">
+                  {Object.keys(adventure.days[day]).map(
+                    (activity, activityIndex) => (
+                      <li key={activityIndex} className="font-normal">
+                        {adventure.days[day][activity]}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            ))}
+          </Collapsible>
         </div>
       ))}
     </div>
