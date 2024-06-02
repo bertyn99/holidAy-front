@@ -41,7 +41,7 @@ const mockFetchItinerary = async () => {
           }
         ]
       },
-      {
+  /*     {
         "day": 2,
         "destinations": [
           {
@@ -168,7 +168,8 @@ const mockFetchItinerary = async () => {
             "weather": "Average temperature: 13°C, chance of rain"
           }
         ]
-      }
+      } */
+    
     ]
   };
   return response.itinerary;

@@ -6,15 +6,15 @@ import Navbar from './components/Navbar';
 
 function App() {
   return (     
-  <div className='h-screen flex flex-col'>
+      <div className='h-screen flex flex-col'>
 
-      <Navbar/>   
+        <Navbar/>   
 
-      <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
-        <Form />
-        <Map></Map>
+        <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
+          <Form />
+          <Map></Map>
+        </div>
       </div>
-    </div>
     );
 }
 
