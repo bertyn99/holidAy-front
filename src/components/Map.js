@@ -188,8 +188,17 @@ const Map = () => {
       libraries: ['places']
     });
   
+    const darkTheme = [
+      { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+      // Add more style rules as needed
+    ];
     const onLoad = useCallback((mapInstance) => {
-      setMap(mapInstance);
+      
+      setMap(mapInstance,{
+        //styles: darkTheme
+      });
     }, []);
   
     const onUnmount = useCallback(() => {
