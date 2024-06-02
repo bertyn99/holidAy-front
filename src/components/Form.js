@@ -115,9 +115,9 @@ const Form = () => {
         ref={conversationRef}
       >
         <div className="w-full space-y-4">
-          <div className="pt-8 pb-2">
+          <div className="pt-8 pb-2 lg:flex hidden">
             <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">
-              👋 Hello, racontes moi le voyage de tes rêves
+              👋 Hello, raconte moi le voyage de tes rêves
             </h1>
           </div>
           <Bubble key={-1} text="" timestamp="" isUser={false} />

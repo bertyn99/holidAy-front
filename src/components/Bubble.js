@@ -27,7 +27,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
   if (!text.response && !isUser) {
     return (
         <>
-            <div className="p-4 mr-32 bg-secondary rounded-lg shadow-lg">
+            <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
                 <p className="font-normal mb-2">Pour commencer, j'aurais besoin de quelques informations :</p>
                 <ul className="list-disc list-inside space-y-1 pl-4">
                     <li className="font-normal">🏖️ Destination</li>
@@ -44,8 +44,8 @@ const Bubble = ({ text, timestamp, isUser }) => {
       <div
         className={`p-4 ${
           isUser
-            ? "ml-32 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none"
-            : "mr-32 bg-secondary rounded-t-lg rounded-lg rounded-tl-none mb-4"
+            ? "lg:ml-32 ml-0 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none"
+            : "lg:mr-32 mr-0 bg-secondary rounded-t-lg rounded-lg rounded-tl-none mb-4"
         }`}
         style={
           isUser
@@ -68,7 +68,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
       {adventures.map((adventure, index) => (
         <div
           key={index}
-          className="bg-secondary p-4 mr-32 rounded-t-lg rounded-lg rounded-tl-none mb-4"
+          className="bg-secondary p-4 lg:mr-32 mr-0 rounded-t-lg rounded-lg rounded-tl-none mb-4"
         >
           <Collapsible title={adventure.name}>
             {Object.keys(adventure.days).map((day, dayIndex) => (
@@ -90,8 +90,8 @@ const Bubble = ({ text, timestamp, isUser }) => {
       ))}
 
       {adventures.length > 1 && (
-        <div className="p-4 mr-32 bg-secondary rounded-lg shadow-lg">
-          <p className="font-normal mb-2">Quelle aventure te ferais le plus plaisir ?</p>
+        <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
+          <p className="font-normal mb-2">Voici 3 propositions d'aventures. Si elles ne vous conviennent pas, précisez votre demande !</p>
         </div>
       )}
     </div>

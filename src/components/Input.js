@@ -41,7 +41,7 @@ const Input = ({ prompt, setPrompt, file, setFile, handleSubmit }) => {
           </div>
         )}
       </div>
-      <form onSubmit={(e) => handleSubmit(e, file)} className="w-full flex items-center p-4 rounded-b-xl flex-wrap">
+      <form onSubmit={(e) => handleSubmit(e, file)} className="w-full flex items-center lg:p-4 p-0 rounded-b-xl flex-wrap lg:mb-0 mb-16">
         <input
           type="text"
           value={prompt}
