@@ -9,11 +9,19 @@ const Bubble = ({ text, timestamp, isUser }) => {
 
   // Extrait les aventures du texte
   const adventures = Object.keys(text)
-    .filter((key) => key.startsWith("Adventure"))
+    .filter(
+      (key) =>
+        key.startsWith("Adventure") && Object.values(text[key]).length > 0
+    )
     .map((adventure) => ({
       name: adventure,
       days: text[adventure],
-    }));
+    }))
+    .filter((adventure) => Object.values(adventure.days).length > 0)
+    .filter((adventure) => Object.values(adventure.days["Day 1"]).length > 0)
+    .filter((adventure) => adventure.days["Day 1"]["Activity 1"].trim() !== "");
+
+  console.log(adventures);
 
   // Vérifie si la réponse est vide et que ce n'est pas l'utilisateur
   if (!text.response && !isUser) {

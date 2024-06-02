@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Input from './Input';
-import Bubble from './Bubble';
-import useChatBotApi from '../services/useChat';
+import React, { useState, useEffect, useRef } from "react";
+import Input from "./Input";
+import Bubble from "./Bubble";
+import useChatBotApi from "../services/useChat";
 
 const Form = () => {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [files, setFiles] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
-  const { loading, error, sendText, sendFile } = useChatBotApi(setData);
+  const [fileResponse, setFileResponse] = useState(null);
+  const { loading, error, sendText, sendFile } = useChatBotApi(
+    setData,
+    setFileResponse
+  );
 
   const conversationRef = useRef(null);
 
@@ -24,17 +28,45 @@ const Form = () => {
       try {
         parsedData = JSON.parse(data);
       } catch (error) {
-        parsedData = 'Mince, il y a eu un problème sur l\'organisation du voyage. 🤕 Fournissez nous plus d\'informations !';
+        parsedData =
+          "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
       }
 
       setConversation((prev) => [
         ...prev,
-        { text: parsedData, timestamp: new Date().toLocaleTimeString(), isUser: false }
+        {
+          text: parsedData,
+          timestamp: new Date().toLocaleTimeString(),
+          isUser: false,
+        },
       ]);
-      setData('');
-      setPrompt('');
+      setData("");
+      setPrompt("");
     }
   }, [data]);
+
+  useEffect(() => {
+    if (fileResponse) {
+      let parsedData;
+      try {
+        parsedData = JSON.parse(fileResponse);
+      } catch (error) {
+        parsedData =
+          "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
+      }
+
+      setConversation((prev) => [
+        ...prev,
+        {
+          text: parsedData,
+          timestamp: new Date().toLocaleTimeString(),
+          isUser: false,
+        },
+      ]);
+      setFileResponse("");
+      setPrompt("");
+    }
+  }, [fileResponse]);
 
   const handleSubmit = async (e, selectedFiles) => {
     e.preventDefault();
@@ -42,15 +74,23 @@ const Form = () => {
     if (prompt && selectedFiles.length === 0) {
       setConversation((prev) => [
         ...prev,
-        { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
+        {
+          text: prompt,
+          timestamp: new Date().toLocaleTimeString(),
+          isUser: true,
+        },
       ]);
 
-      setPrompt('');
+      setPrompt("");
       await sendText(prompt);
     } else if (!prompt && selectedFiles.length > 0) {
       setConversation((prev) => [
         ...prev,
-        { text: 'File sent', timestamp: new Date().toLocaleTimeString(), isUser: true }
+        {
+          text: "File sent",
+          timestamp: new Date().toLocaleTimeString(),
+          isUser: true,
+        },
       ]);
 
       for (let file of selectedFiles) {
@@ -61,34 +101,56 @@ const Form = () => {
   };
 
   return (
-    <div 
-      className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10 overflow-hidden px-4" 
-      style={{ boxShadow: '0 0 50px 0 rgba(255, 255, 255, 0.2)', border: "0.5px solid", borderColor: "#696FFF" }}>
+    <div
+      className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10 overflow-hidden px-4"
+      style={{
+        boxShadow: "0 0 50px 0 rgba(255, 255, 255, 0.2)",
+        border: "0.5px solid",
+        borderColor: "#696FFF",
+      }}
+    >
       <div className="absolute top-0 left-0 w-full h-1/20 bg-gradient-to-b from-black to-transparent h-10 rounded-2xl pt-10"></div>
-        <div className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth" ref={conversationRef}>
-          <div className="w-full space-y-4">
-            <div className="pt-8 pb-2">
-              <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">Good morning, 👋 Tell us about your trip</h1>
-            </div>
-            <Bubble key={-1} text="" timestamp="" isUser={false} />
-            {conversation.map((conv, index) => (
-              <Bubble key={index} text={conv.text} timestamp={conv.timestamp} isUser={conv.isUser} />
-            ))}
+      <div
+        className="flex-grow flex flex-col items-center p-4 space-y-4 overflow-y-auto scroll-smooth"
+        ref={conversationRef}
+      >
+        <div className="w-full space-y-4">
+          <div className="pt-8 pb-2">
+            <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">
+              Good morning, 👋 Tell us about your trip
+            </h1>
           </div>
+          <Bubble key={-1} text="" timestamp="" isUser={false} />
+          {conversation.map((conv, index) => (
+            <Bubble
+              key={index}
+              text={conv.text}
+              timestamp={conv.timestamp}
+              isUser={conv.isUser}
+            />
+          ))}
+        </div>
       </div>
-      <Input prompt={prompt} setPrompt={setPrompt} files={files} setFiles={setFiles} handleSubmit={handleSubmit} />
-      <style jsx>{`
-        ::-webkit-scrollbar {
-          width: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-          background-color: #343943;
-          border-radius: 10px;
-        }
-        ::-webkit-scrollbar-track {
-          background-color: transparent;
-        }
-      `}
+      <Input
+        prompt={prompt}
+        setPrompt={setPrompt}
+        files={files}
+        setFiles={setFiles}
+        handleSubmit={handleSubmit}
+      />
+      <style jsx>
+        {`
+          ::-webkit-scrollbar {
+            width: 10px;
+          }
+          ::-webkit-scrollbar-thumb {
+            background-color: #343943;
+            border-radius: 10px;
+          }
+          ::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
+        `}
       </style>
     </div>
   );

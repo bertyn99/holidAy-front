@@ -1,62 +1,68 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-const useChatBotApi = (setData) => {
+const useChatBotApi = (setData, setFileResponse) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendText = useCallback(async (text) => {
-    setLoading(true);
-    setError(null);
+  const sendText = useCallback(
+    async (text) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch('http://localhost:8000/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: text }),
-      });
+      try {
+        const response = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: text }),
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.text();
+        console.log("Fetched data:", data);
+        setData(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
+    },
+    [setData]
+  );
 
-      const data = await response.text();
-      console.log('Fetched data:', data);
-      setData(data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [setData]);
+  const sendFile = useCallback(
+    async (file) => {
+      setLoading(true);
+      setError(null);
 
-  const sendFile = useCallback(async (file) => {
-    setLoading(true);
-    setError(null);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
+        const response = await fetch("http://localhost:8000/chat/file", {
+          method: "POST",
+          body: formData,
+        });
 
-      const response = await fetch('http://localhost:8000/chat/file', {
-        method: 'POST',
-        body: formData,
-      });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.text();
+        console.log("Fetched data:", data);
+        setFileResponse(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-
-      const data = await response.text();
-      console.log('Fetched data:', data);
-      setData(data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [setData]);
+    },
+    [setFileResponse]
+  );
 
   return { loading, error, sendText, sendFile };
 };
