@@ -10,10 +10,10 @@ function App() {
 
       <Navbar/>   
 
-      <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center">
+      <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
         <Form />
-      <Map></Map>
-    </div>
+        <Map></Map>
+      </div>
     </div>
     );
 }
