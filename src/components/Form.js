@@ -126,7 +126,7 @@ const Form = () => {
       } catch (error) {
         console.log(error);
         parsedData =
-          "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
+          "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournis-nous plus d'informations, s'il te plaît !";
       }
 
       setConversation((prev) => [
@@ -163,7 +163,7 @@ const Form = () => {
       setConversation((prev) => [
         ...prev,
         {
-          text: "Fichier transmit. ✅",
+          text: "Fichier transmis. ✅",
           timestamp: new Date().toLocaleTimeString(),
           isUser: true,
         },
@@ -172,7 +172,7 @@ const Form = () => {
       await sendFile(file);
     }
   };
-
+  
   return (
     <div
       className="flex flex-1 flex-col h-full mb-4 max-w-2xl bg-primary text-white rounded-2xl border-primary-purple shadow-md relative mr-10 overflow-hidden px-4"
@@ -202,6 +202,7 @@ const Form = () => {
               isUser={conv.isUser}
             />
             ))}
+
             {loading && (
             <div className="w-full flex justify-start py-4">
               <div className="loader"></div> {/* Add your spinner styling here */}
@@ -209,6 +210,14 @@ const Form = () => {
             )}
           </div>
       </div>
+            <div className="ml-3">
+            <button type="submit" className="mx-2 my-2 px-4 py-2 rounded-lg border border-primary-purple hover:bg-primary-purple/50">
+       Export PDF
+          </button>
+          <button type="submit" className="mx-2 my-2 px-4 py-2 rounded-lg border bg-primary-purple hover:bg-primary-purple/50">
+       Export Carte
+          </button>
+            </div>
       <Input
         prompt={prompt}
         setPrompt={setPrompt}
