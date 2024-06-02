@@ -3,13 +3,15 @@ import Input from "./Input";
 import Bubble from "./Bubble";
 import useChatBotApi from "../services/useChat";
 
+
 const Form = () => {
   const [prompt, setPrompt] = useState("");
   const [file, setFile] = useState(null);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
   const [fileResponse, setFileResponse] = useState(null);
-  const { loading, error, sendText, sendFile } = useChatBotApi(
+  const [loading, setLoading] = useState(false); // Initialize loading as true
+  const {error, sendText, sendFile } = useChatBotApi(
     setData,
     setFileResponse
   );
@@ -42,6 +44,7 @@ const Form = () => {
       ]);
       setData("");
       setPrompt("");
+      setLoading(false); // Set loading to false once the data is processed
     }
   }, [data]);
 
@@ -67,6 +70,7 @@ const Form = () => {
       setFileResponse("");
       setFile(null);
       setPrompt("");
+      setLoading(false); // Set loading to false once the file response is processed
     }
   }, [fileResponse]);
 
@@ -82,8 +86,8 @@ const Form = () => {
           isUser: true,
         },
       ]);
-
       setPrompt("");
+      setLoading(true); // Set loading to true when sending text
       await sendText(prompt);
     } else if (!prompt && selectedFile) {
       setConversation((prev) => [
@@ -95,8 +99,10 @@ const Form = () => {
         },
       ]);
 
+ setLoading(true); 
       setFile(null);
       await sendFile(selectedFile);
+
     }
   };
 
@@ -128,8 +134,13 @@ const Form = () => {
               timestamp={conv.timestamp}
               isUser={conv.isUser}
             />
-          ))}
-        </div>
+            ))}
+            {loading && (
+            <div className="w-full flex justify-start py-4">
+              <div className="loader"></div> {/* Add your spinner styling here */}
+            </div>
+            )}
+          </div>
       </div>
       <Input
         prompt={prompt}
