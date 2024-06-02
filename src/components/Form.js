@@ -20,11 +20,19 @@ const Form = () => {
 
   useEffect(() => {
     if (data) {
+      let parsedData;
+      try {
+        parsedData = JSON.parse(data);
+      } catch (error) {
+        parsedData = 'Mince, il y a eu un problème sur l\'organisation du voyage. 🤕 Fournissez nous plus d\'informations !';
+      }
+
       setConversation((prev) => [
         ...prev,
-        { text: JSON.parse(data), timestamp: new Date().toLocaleTimeString(), isUser: false }
+        { text: parsedData, timestamp: new Date().toLocaleTimeString(), isUser: false }
       ]);
       setData('');
+      setPrompt('');
     }
   }, [data]);
 

@@ -26,14 +26,14 @@ const Bubble = ({ text, timestamp, isUser }) => {
 
   return (
     <div className='h-sceen'>
-      <div className={`p-4 ${isUser ? 'ml-32 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none' : 'mr-32 bg-secondary rounded-t-lg rounded-lg rounded-tl-none'}`}>
+      <div className={`p-4 ${isUser ? 'ml-32 bg-bubble-user self-end rounded-t-lg rounded-l-lg rounded-br-none' : 'mr-32 bg-secondary rounded-t-lg rounded-lg rounded-tl-none mb-4'}`}>
         <p className={`font-normal ${isUser ? 'text-gray-800' : 'text-white'}`}>{isUser ? text.response : text.response}</p>
         <p className={`font-normal ${isUser ? 'text-gray-800' : 'text-gray-500'}`}>{timestamp}</p>
       </div>
 
       {adventures.map((adventure, index) => (
         <div key={index} className="bg-secondary p-4 mr-32 rounded-t-lg rounded-lg rounded-tl-none mb-4">
-          <h2 className="font-bold text-lg mb-2">{adventure.name}</h2>
+          <h2 className="font-bold text-lg mb-">{adventure.name}</h2>
           {Object.keys(adventure.days).map((day, dayIndex) => (
             <div key={dayIndex} className="mb-2">
               <h3 className="font-semibold">{day}</h3>
