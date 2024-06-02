@@ -6,7 +6,7 @@ import useChatBotApi from "../services/useChat";
 
 const Form = () => {
   const [prompt, setPrompt] = useState("");
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
   const [fileResponse, setFileResponse] = useState(null);
@@ -54,6 +54,7 @@ const Form = () => {
       try {
         parsedData = JSON.parse(fileResponse);
       } catch (error) {
+        console.log(error);
         parsedData =
           "Mince, il y a eu un problème sur l'organisation du voyage. 🤕 Fournissez nous plus d'informations !";
       }
@@ -67,15 +68,16 @@ const Form = () => {
         },
       ]);
       setFileResponse("");
+      setFile(null);
       setPrompt("");
       setLoading(false); // Set loading to false once the file response is processed
     }
   }, [fileResponse]);
 
-  const handleSubmit = async (e, selectedFiles) => {
+  const handleSubmit = async (e, selectedFile) => {
     e.preventDefault();
 
-    if (prompt && selectedFiles.length === 0) {
+    if (prompt && !selectedFile) {
       setConversation((prev) => [
         ...prev,
         {
@@ -87,11 +89,11 @@ const Form = () => {
       setPrompt("");
       setLoading(true); // Set loading to true when sending text
       await sendText(prompt);
-    } else if (!prompt && selectedFiles.length > 0) {
+    } else if (!prompt && selectedFile) {
       setConversation((prev) => [
         ...prev,
         {
-          text: "File sent",
+          text: "Fichier transmit. ✅",
           timestamp: new Date().toLocaleTimeString(),
           isUser: true,
         },
@@ -101,7 +103,6 @@ const Form = () => {
         await sendFile(file);
       }
     }
-    setFiles([]);
   };
 
   return (
@@ -121,7 +122,7 @@ const Form = () => {
         <div className="w-full space-y-4">
           <div className="pt-8 pb-2">
             <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">
-              Good morning, 👋 Tell us about your trip
+              👋 Hello, racontes moi le voyage de tes rêves
             </h1>
           </div>
           <Bubble key={-1} text="" timestamp="" isUser={false} />
@@ -143,8 +144,8 @@ const Form = () => {
       <Input
         prompt={prompt}
         setPrompt={setPrompt}
-        files={files}
-        setFiles={setFiles}
+        file={file}
+        setFile={setFile}
         handleSubmit={handleSubmit}
       />
       <style jsx>
