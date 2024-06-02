@@ -25,7 +25,7 @@ const Form = () => {
     if (data) {
       setConversation((prev) => [
         ...prev,
-        { text: data, timestamp: new Date().toLocaleTimeString(), isUser: false }
+        { text: JSON.parse(data), timestamp: new Date().toLocaleTimeString(), isUser: false }
       ]);
     }
     setData('');
@@ -43,6 +43,7 @@ const Form = () => {
       ]);
 
       // Envoie le texte
+      setPrompt('');
       await sendText(prompt);
     } else if (!prompt && selectedFiles.length > 0) {
       // Ajoute une entrée pour le fichier dans la conversation
@@ -56,8 +57,6 @@ const Form = () => {
         await sendFile(file);
       }
     }
-
-    setPrompt('');
     setFiles([]);
   };
 
