@@ -3,52 +3,65 @@ import Input from './Input';
 import Bubble from './Bubble';
 import useChatBotApi from '../services/useChat';
 
-const Form = () => {
+const Form = ({changeCallMap}) => {
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState([]);
   const [conversation, setConversation] = useState([]);
   const [data, setData] = useState(null);
   const { loading, error, sendText, sendFile } = useChatBotApi(setData);
 
+
+  // Référence à la div contenant la conversation
   const conversationRef = useRef(null);
 
   useEffect(() => {
+    // Après le rendu initial, défile vers le bas de la conversation
     if (conversationRef.current) {
       conversationRef.current.scrollTop = conversationRef.current.scrollHeight;
     }
   }, [conversation]);
 
   useEffect(() => {
+    console.log('Data changed:', data); // Ajout de log pour vérifier les changements de data
     if (data) {
       setConversation((prev) => [
         ...prev,
         { text: JSON.parse(data), timestamp: new Date().toLocaleTimeString(), isUser: false }
       ]);
+      changeCallMap(true)
+
       setData('');
     }
+    setData('');
   }, [data]);
 
   const handleSubmit = async (e, selectedFiles) => {
     e.preventDefault();
 
+    // Vérifie si l'utilisateur a saisi du texte ou téléchargé des fichiers, mais pas les deux
     if (prompt && selectedFiles.length === 0) {
+      // Ajoute le message de l'utilisateur à la conversation
       setConversation((prev) => [
         ...prev,
         { text: prompt, timestamp: new Date().toLocaleTimeString(), isUser: true }
       ]);
 
-      setPrompt('');
+      // Envoie le texte
       await sendText(prompt);
     } else if (!prompt && selectedFiles.length > 0) {
+      // Ajoute une entrée pour le fichier dans la conversation
       setConversation((prev) => [
         ...prev,
         { text: 'File sent', timestamp: new Date().toLocaleTimeString(), isUser: true }
       ]);
 
+      // Envoie les fichiers
       for (let file of selectedFiles) {
         await sendFile(file);
       }
     }
+
+    setPrompt('');
     setFiles([]);
   };
 
@@ -62,7 +75,9 @@ const Form = () => {
             <div className="pt-8 pb-2">
               <h1 className="text-4xl font-semibold font-montserrat px-4 leading-10">Good morning, 👋 Tell us about your trip</h1>
             </div>
+            {/* Bulle par défaut de l'interlocuteur */}
             <Bubble key={-1} text="" timestamp="" isUser={false} />
+            {/* Bulles de conversation dynamiques */}
             {conversation.map((conv, index) => (
               <Bubble key={index} text={conv.text} timestamp={conv.timestamp} isUser={conv.isUser} />
             ))}

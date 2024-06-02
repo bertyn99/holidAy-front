@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Form from './components/Form';
 import Map from './components/Map';
-import './App.css';  // Assurez-vous que le chemin est correct selon la structure de vos dossiers
+import './App.css';  // Ensure the path is correct according to your folder structure
 import Navbar from './components/Navbar';
 
 function App() {
-  return (     
-      <div className='h-screen flex flex-col'>
+  const [callMap, setCallMap] = useState(false);
 
-        <Navbar/>   
-
-        <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
-          <Form />
-          <Map></Map>
-        </div>
+  return (
+    <div className='h-screen flex flex-col'>
+      <Navbar />
+      <div className="flex-grow w-screen pb-10 px-10 bg-primary-bg bg-cover bg-no-repeat flex justify-center overflow-hidden">
+        <Form changeCallMap={setCallMap} />
+        <Map callMap={callMap} />
       </div>
-    );
+    </div>
+  );
 }
 
 export default App;
