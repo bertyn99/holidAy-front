@@ -210,6 +210,20 @@ const Form = () => {
             )}
           </div>
       </div>
+      { conversation.map((conv) => {
+         return Object.keys(conv.text)
+        .filter(
+            (key) =>
+            key.startsWith("Aventure") && Object.values(conv.text[key]).length > 0
+          )
+          .map((adventure) => ({
+              name: adventure,
+              days: conv.text[adventure],
+          }))
+          .filter((adventure) => Object.values(adventure.days).length > 0)
+          .filter((adventure) => Object.values(adventure.days["Jour 1"]).length > 0)
+          .filter((adventure) => adventure.days["Jour 1"]["Activité 1"].trim() !== "");
+      }) ?
             <div className="ml-3">
             <button type="submit" className="mx-2 my-2 px-4 py-2 rounded-lg border border-primary-purple hover:bg-primary-purple/50">
        Export PDF
@@ -217,7 +231,8 @@ const Form = () => {
           <button type="submit" className="mx-2 my-2 px-4 py-2 rounded-lg border bg-primary-purple hover:bg-primary-purple/50">
        Export Carte
           </button>
-            </div>
+            </div> : null
+      }
       <Input
         prompt={prompt}
         setPrompt={setPrompt}
