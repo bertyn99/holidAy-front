@@ -3,10 +3,12 @@ import Form from './components/Form';
 import Map from './components/Map';
 import './App.css';  // Assurez-vous que le chemin est correct selon la structure de vos dossiers
 import Navbar from './components/Navbar';
+import TravelDocument from './pages/TravelDocument';
+import { PDFViewer } from '@react-pdf/renderer';
 
 function App() {
   return (     
-  <div className='h-screen flex flex-col'>
+   <div className='h-screen flex flex-col'>
 
       <Navbar/>   
 
@@ -15,7 +17,11 @@ function App() {
       <Map></Map>
       
     </div>
-    </div>
+    </div> 
+   /*  <PDFViewer width="100%" height="1000">
+       <TravelDocument />
+     
+      </PDFViewer> */
     );
 }
 
