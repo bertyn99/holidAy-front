@@ -7,24 +7,26 @@ const Bubble = ({ text, timestamp, isUser }) => {
     text = { response: text };
   }
 
-  // Extrait les aventures du texte
-  const adventures = Object.keys(text)
-    .filter(
-      (key) =>
-        key.startsWith("Aventure") && Object.values(text[key]).length > 0
-    )
-    .map((adventure) => ({
-      name: adventure,
-      days: text[adventure],
-    }))
-    .filter((adventure) => Object.values(adventure.days).length > 0)
-    .filter((adventure) => Object.values(adventure.days["Jour 1"]).length > 0)
-    .filter((adventure) => adventure.days["Jour 1"]["Activité 1"].trim() !== "");
-
-  console.log(adventures);
+  let adventures
+  if (text) {
+    
+      // Extrait les aventures du texte
+      adventures = Object.keys(text)
+      .filter(
+          (key) =>
+          key.startsWith("Aventure") && Object.values(text[key]).length > 0
+        )
+        .map((adventure) => ({
+            name: adventure,
+            days: text[adventure],
+        }))
+        .filter((adventure) => Object.values(adventure.days).length > 0)
+        .filter((adventure) => Object.values(adventure.days["Jour 1"]).length > 0)
+        .filter((adventure) => adventure.days["Jour 1"]["Activité 1"].trim() !== "");
+    }
 
   // Vérifie si la réponse est vide et que ce n'est pas l'utilisateur
-  if (!text.response && !isUser) {
+  if (!text?.response && text?.response != 'fail' && !isUser) {
     return (
         <>
             <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
@@ -38,6 +40,8 @@ const Bubble = ({ text, timestamp, isUser }) => {
         </>
     );
   }
+
+  if(text?.response == 'fail') return;
 
   return (
     <div className="h-sceen">
@@ -54,7 +58,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
         }
       >
         <p className={`font-normal ${isUser ? "text-gray-800" : "text-white"}`}>
-          {isUser ? text.response : text.response}
+          {text?.response}
         </p>
         <p
           className={`font-normal ${
@@ -65,7 +69,7 @@ const Bubble = ({ text, timestamp, isUser }) => {
         </p>
       </div>
 
-      {adventures.map((adventure, index) => (
+      {adventures?.map((adventure, index) => (
         <div
           key={index}
           className="bg-secondary p-4 lg:mr-32 mr-0 rounded-t-lg rounded-lg rounded-tl-none mb-4"
@@ -89,9 +93,9 @@ const Bubble = ({ text, timestamp, isUser }) => {
         </div>
       ))}
 
-      {adventures.length > 1 && (
+      {adventures?.length > 1 && (
         <div className="p-4 lg:mr-32 mr-0 bg-secondary rounded-lg shadow-lg">
-          <p className="font-normal mb-2">Voici 3 propositions d'aventures. Si elles ne vous conviennent pas, précisez votre demande !</p>
+          <p className="font-normal mb-2">Voici plusieurs propositions d'aventures. Si elles ne vous conviennent pas, précisez votre demande !</p>
         </div>
       )}
     </div>
